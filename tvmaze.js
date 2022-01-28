@@ -2,8 +2,8 @@
 async function searchShows(query) {
   const response = await axios.get('http://api.tvmaze.com/search/shows', { params: {q: query } });
   const results = response.data;
-  console.log(results);
   const showArr = [];
+
   for (let each of results){
     showArr.push(each.show)
   }
@@ -14,7 +14,6 @@ async function searchShows(query) {
     }
   }
 
-  console.log(showArr);
   return showArr;
 }
 
@@ -69,10 +68,10 @@ async function getEpisodes(id) {
 }
 
 
-const $showsList = $("#shows-list");
-$showsList.on('submit', '.selectMe', async function (e) {
+
+$("#shows-list").on('submit', '.selectMe', async function (e) {
   e.preventDefault();
-  console.log(e.target)
+  
   const { 0: {id} } = $(e.target).find('button');
   let btnID = `#${id}`;
   const showID = $(btnID).parent().parent().parent().data('showId');
@@ -85,12 +84,13 @@ $showsList.on('submit', '.selectMe', async function (e) {
 
 async function populateEpisodes (data) {
   const $container = $('#episodes-area');
-  $container.css('display', 'block');
+  $container.css('display', 'block').empty();
+  
   for (let each of data){
     let episode = $(`
       <li class="list-group-item">Name: ${each.name}</li>
       <li class="list-group-item">Season: ${each.season}</li>
-      <li class="list-group-item">Number: ${each.number}</li>
+      <li class="list-group-item">Number: ${each.number}</li><br>
       `);
     $container.append(episode);
   }
